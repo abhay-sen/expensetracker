@@ -1,0 +1,18 @@
+.auth{
+    width: 350px;
+    justify-self: center;
+    border: 5px;
+    border-radius: 5%;
+    background-color: #393E46;
+    height: 550px;
+    margin: auto;
+    
+    
+    
+}
+.auth img{
+    height:150px;
+    width: 70%;
+    margin-top: 50px;
+    margin-left: 15%;
+}
