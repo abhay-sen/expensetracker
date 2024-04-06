@@ -4,7 +4,7 @@ import supabase from "../config/supabase";
 function CreateExpense(){
 
     const [test,setTest]=useState([]);
-    console.log(test);
+    
     useEffect(() => {
         getData()
     },[])
@@ -13,6 +13,7 @@ function CreateExpense(){
         .from("testing")
         .select("*");
         setTest(testing)
+        
     }
     
     return (<div>

@@ -6,23 +6,70 @@ import {
 import supabase from '../config/supabase'
 import "./../../public/styles/SignInPage.css"
 import { useState, useEffect } from 'react'
-import LoggedInpage from './LoggedInpage'
-function SignInPage(){
+import { useNavigate } from 'react-router-dom'
+
+export default function SignInPage(){
+  const navigate = useNavigate();
   const [session, setSession] = useState(null)
+  const [uid, setUid] = useState(null); 
+
 
     useEffect(() => {
       supabase.auth.getSession().then(({ data: { session } }) => {
-        setSession(session)
+        setSession(session);
+        if (session) {
+          setUid(session.user.id); // Extract UID from session on initial load
+        }
       })
 
       const {
         data: { subscription },
       } = supabase.auth.onAuthStateChange((_event, session) => {
-        setSession(session)
+        setSession(session);
+        if (session) {
+          setUid(session.user.id); // Update UID on subsequent auth state changes
+        } else {
+          setUid(null); // Clear UID on logout
+        }
       })
 
       return () => subscription.unsubscribe()
     }, [])
+    async function checkUserExists(uid) {
+      try {
+        const { data, error } = await supabase
+          .from("user profiles") // Replace with your actual table name
+          .select("id") // Select only the ID column (optional)
+          .eq("id", uid) // Filter by the UID
+          .single(); // Fetch a single row
+
+        if (error) {
+          throw error; // Re-throw the error for handling
+        }
+
+        return !!data; // Return true if data exists, false otherwise
+      } catch (error) {
+        console.error("Error checking user existence:", error);
+        return false; // Handle errors gracefully, consider returning null or throwing a specific error
+      }
+    }
+    useEffect(() => {
+      if (session) {
+        checkUserExists(uid)
+          .then((exists) => {
+            if (exists) {
+              navigate("/dashboard")
+            } else {
+              navigate("/NameForm")
+            }
+          })
+          .catch((error) => {
+            console.error("An error occurred:", error);
+          });
+        navigate("/NameForm"); 
+        // Change '/dashboard' to your desired route
+      }
+    }, [session, navigate,uid]); 
 
     if (!session) {
       return (<div className="auth">
@@ -83,9 +130,7 @@ function SignInPage(){
     }
     else {
       
-      return (<LoggedInpage/>
-        )
+      return null;
     }
   
 }
-export default SignInPage;
