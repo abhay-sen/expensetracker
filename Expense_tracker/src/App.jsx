@@ -7,6 +7,7 @@ import Dashboard from "./components/Dashboard"
 import NameForm from "./components/NameForm"
 import { ThemeProvider } from "@emotion/react"
 import theme from "./config/theme"
+import UserProfile from "./components/UserProfile"
 
 
 function App(){
@@ -17,7 +18,7 @@ function App(){
           <Route path={"/"} element={<SignInPage />} />
           <Route path={"/create_expense"} element={<CreateExpense />} />
           <Route path={"/dashboard"} element={<Dashboard />} />
-
+          <Route path={"/UserProfile"} element={<UserProfile/>}/>
           <Route path={"/NameForm"} element={<NameForm />} />
         </Routes>
       </ThemeProvider>

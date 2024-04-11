@@ -1,0 +1,65 @@
+Supabase provides a JavaScript library that allows you to interact with your database. To create different tables for different users, you can use the createTable method provided by the Supabase client.
+
+Here's an example code snippet that creates a table named users for a specific user:
+
+const { createClient } = require('@supabase/supabase-js')
+
+// Initialize the Supabase client
+const supabaseUrl = 'https://your-project-url.supabase.co'
+const supabaseKey = 'your-anon-key'
+const supabase = createClient(supabaseUrl, supabaseKey)
+
+// Define the table schema
+const schema = 'public'
+const tableName = 'users'
+const tableColumns = 'id SERIAL PRIMARY KEY, name TEXT, email TEXT'
+
+// Create the table for a specific user
+const userId = '123'
+const userTableName = `user_${userId}_${tableName}`
+const { data, error } = await supabase.from(schema).createTable(userTableName, {
+  columns: tableColumns
+})
+
+In this example, we first initialize the Supabase client with our project URL and anonymous key. Then, we define the schema, table name, and columns for our table. We also specify the user ID and create a unique table name for that user by concatenating the user ID with the original table name.
+
+Finally, we use the createTable method to create the table for the specific user. The data variable will contain the response data if the table was created successfully, and the error variable will contain any error messages if the table creation failed.
+
+Note that you will need to modify this code to fit your specific use case, such as retrieving the user ID dynamically and handling any errors that may occur.
+
+
+
+
+const { Pool } = require('pg');
+
+// Create a new pool with your database connection details
+const pool = new Pool({
+  user: 'your_username',
+  host: 'your_host',
+  database: 'your_database',
+  password: 'your_password',
+  port: 5432, // or your custom port
+});
+
+// Define a function to create a table with a dynamic table name
+async function createTable(tableName) {
+  const query = `
+    CREATE TABLE IF NOT EXISTS ${tableName} (
+      id serial PRIMARY KEY,
+      amount numeric NOT NULL,
+      description text,
+      category text,
+      date timestamp with time zone DEFAULT now()
+    )
+  `;
+  const client = await pool.connect();
+  try {
+    await client.query(query);
+    console.log(`Table "${tableName}" created successfully`);
+  } finally {
+    client.release();
+  }
+}
+
+// Call the function with a dynamic table name
+createTable('expenses_for_user_123');
