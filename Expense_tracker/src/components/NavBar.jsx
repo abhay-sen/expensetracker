@@ -7,11 +7,12 @@ import Typography from "@mui/material/Typography";
 import Menu from "@mui/material/Menu";
 
 import Container from "@mui/material/Container";
-import Avatar from "@mui/material/Avatar";
+
 import supabase from "../config/supabase";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import {useNavigate} from "react-router-dom";
+import { AccountCircle } from "@mui/icons-material";
 
 
 const settings = ["Profile","Dashboard", "Logout"];
@@ -65,6 +66,7 @@ function NavBar() {
               letterSpacing: ".3rem",
               color: "inherit",
               textDecoration: "none",
+              width: 150,
             }}
           >
             <img
@@ -74,10 +76,10 @@ function NavBar() {
             />
           </Typography>
 
-          <Box sx={{ flexGrow: 0, marginLeft: "90%" }}>
+          <Box sx={{ flexGrow: 0, marginLeft: "85%" }}>
             <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+              <IconButton onClick={handleOpenUserMenu} size="large">
+                <AccountCircle fontSize="large"/>
               </IconButton>
             </Tooltip>
             <Menu
