@@ -55,7 +55,7 @@ function CreateExpense(){
   return (
     <div className="form">
       <form onSubmit={createExpense} className="form-style-4">
-        <label htmlFor="amount">Amount:</label>
+        <label htmlFor="amount">Amount :</label>
         <input
           type="number"
           id="amount"
